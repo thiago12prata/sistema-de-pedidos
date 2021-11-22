@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.practice.sistemadepedidos.entities.Categoria;
 import com.practice.sistemadepedidos.repositories.CategoriaRepository;
+import com.practice.sistemadepedidos.servicesexception.ResourceNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -16,6 +17,10 @@ public class CategoriaService {
 	
 	public Categoria finById(Long id) {
 		Optional<Categoria> obj = repository.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ResourceNotFoundException("Não foi encontrato o recurso: " 
+			+ Categoria.class.getName()
+			+" com a id "
+			+ id 
+		));
 	}
 }
