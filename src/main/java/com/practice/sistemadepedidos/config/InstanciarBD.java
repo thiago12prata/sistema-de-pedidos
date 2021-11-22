@@ -8,8 +8,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.practice.sistemadepedidos.entities.Categoria;
+import com.practice.sistemadepedidos.entities.Cidade;
+import com.practice.sistemadepedidos.entities.Estado;
 import com.practice.sistemadepedidos.entities.Produto;
 import com.practice.sistemadepedidos.repositories.CategoriaRepository;
+import com.practice.sistemadepedidos.repositories.CidadeRepository;
+import com.practice.sistemadepedidos.repositories.EstadoRepository;
 import com.practice.sistemadepedidos.repositories.ProdutoRepository;
 
 @Configuration
@@ -20,6 +24,10 @@ public class InstanciarBD implements CommandLineRunner{
 	private CategoriaRepository categoriaRepository;
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	@Autowired
+	private EstadoRepository estadoRepository;
+	@Autowired
+	private CidadeRepository cidadeRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -37,7 +45,22 @@ public class InstanciarBD implements CommandLineRunner{
 		pr2.getCategorias().addAll(Arrays.asList(cat1,cat2));
 		pr3.getCategorias().add(cat1);
 		
+		Estado est1 = new Estado(null, "Minas Gerais");
+		Estado est2 = new Estado(null, "São Paulo");
+		
+		Cidade c1 = new Cidade(null, "Uberlandia", est1);
+		Cidade c2 = new Cidade(null, "São Paulo", est2);
+		Cidade c3 = new Cidade(null, "Campinas", est2);
+
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
 		produtoRepository.saveAll(Arrays.asList(pr1,pr2,pr3));
+		
+		est1.getCidades().addAll(Arrays.asList(c1));
+		est2.getCidades().addAll(Arrays.asList(c2,c3));
+		
+		estadoRepository.saveAll(Arrays.asList(est1,est2));
+		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
+
+		
 	}
 }
