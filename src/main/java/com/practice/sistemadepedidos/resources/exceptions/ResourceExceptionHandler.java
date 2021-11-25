@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.practice.sistemadepedidos.servicesexception.DataIntegrityException;
 import com.practice.sistemadepedidos.servicesexception.ResourceNotFoundException;
 
 
@@ -26,6 +27,13 @@ public class ResourceExceptionHandler {
 	public ResponseEntity<StandardError> Exception(Exception e, HttpServletRequest request) {
 		String erro = "Erro interno do servidor";
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		StandardError err = new StandardError(Instant.now(), status.value(), erro, e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	@ExceptionHandler(DataIntegrityException.class)
+	public ResponseEntity<StandardError> Exception(DataIntegrityException e, HttpServletRequest request) {
+		String erro = "Violação na integridade dos dados";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		StandardError err = new StandardError(Instant.now(), status.value(), erro, e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
