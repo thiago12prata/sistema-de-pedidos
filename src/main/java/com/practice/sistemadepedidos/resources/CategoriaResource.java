@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -57,5 +59,15 @@ public class CategoriaResource {
 			listDTO.add(new CategoriaDTO(c));
 		}
 		return ResponseEntity.ok().body(listDTO);
+	}
+	@GetMapping(value = "/paged")
+	public ResponseEntity<Page<CategoriaDTO>> findAllPaged(
+			@RequestParam(value = "pages", defaultValue = "0") Integer pages, 
+			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage, 
+			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy, 
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+		Page<Categoria> page =  service.findAllPaged(pages, linesPerPage, orderBy, direction);	
+		Page<CategoriaDTO> pageDTO = page.map(c -> new CategoriaDTO(c));
+		return ResponseEntity.ok().body(pageDTO);
 	}
 }
