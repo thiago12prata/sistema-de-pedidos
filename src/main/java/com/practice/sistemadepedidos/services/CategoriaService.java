@@ -1,5 +1,6 @@
 package com.practice.sistemadepedidos.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository repository;
 	
-	public Categoria finById(Long id) {
+	public Categoria findById(Long id) {
 		Optional<Categoria> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException("Não foi encontrato o recurso: " 
 			+ Categoria.class.getName()
@@ -30,7 +31,7 @@ public class CategoriaService {
 		return repository.save(obj);
 	}
 	public Categoria update(Categoria obj) {
-		finById(obj.getId());
+		findById(obj.getId());
 		return repository.save(obj);
 	}
 	public void delete(Long id) {
@@ -41,5 +42,8 @@ public class CategoriaService {
 		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir uma categoria que possui produtos");
 		}
+	}
+	public List<Categoria> findAll() {
+		return repository.findAll();
 	}
 }
