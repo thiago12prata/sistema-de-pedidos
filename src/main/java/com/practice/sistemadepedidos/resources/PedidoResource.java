@@ -19,7 +19,7 @@ public class PedidoResource {
 	private PedidoService service;
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Pedido> listar(@PathVariable Long id) {
+	public ResponseEntity<Pedido> finById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(service.finById(id));
 	}
 }

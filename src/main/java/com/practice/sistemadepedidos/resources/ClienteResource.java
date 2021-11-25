@@ -19,7 +19,7 @@ public class ClienteResource {
 	private ClienteService service;
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Cliente> listar(@PathVariable Long id) {
+	public ResponseEntity<Cliente> finById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(service.finById(id));
 	}
 }
