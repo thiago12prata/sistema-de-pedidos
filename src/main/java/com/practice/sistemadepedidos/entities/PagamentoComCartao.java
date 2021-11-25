@@ -16,10 +16,10 @@ public class PagamentoComCartao extends Pagamento{
 		super(id, status, pedido);
 		this.qtdParcelas = qtdParcelas;
 	}
+	
 	public Integer getQtdParcelas() {
 		return qtdParcelas;
 	}
-	
 	public void setQtdParcelas(Integer qtdParcelas) {
 		this.qtdParcelas = qtdParcelas;
 	}
