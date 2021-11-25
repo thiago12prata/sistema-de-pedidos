@@ -2,8 +2,10 @@ package com.practice.sistemadepedidos.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -33,6 +36,9 @@ public class Produto implements Serializable {
 	)
 	List<Categoria> categorias = new ArrayList<>();
 	
+	@OneToMany(mappedBy = "id.produto")
+	private Set<ItemPedido> itens = new HashSet<>();
+	
 	public Produto() {
 	}
 	public Produto(Long id, String nome, Double preco) {
@@ -41,6 +47,14 @@ public class Produto implements Serializable {
 		this.preco = preco;
 	}
 
+	public List<Pedido> getPedidos(){
+		List<Pedido> list = new ArrayList<>();
+		for(ItemPedido ip: itens) {
+			list.add(ip.getPedido());
+		}
+		return list;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -61,6 +75,9 @@ public class Produto implements Serializable {
 	}
 	public List<Categoria> getCategorias() {
 		return categorias;
+	}
+	public Set<ItemPedido> getItens() {
+		return itens;
 	}
 	
 	@Override

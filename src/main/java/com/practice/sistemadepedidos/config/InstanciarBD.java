@@ -13,6 +13,7 @@ import com.practice.sistemadepedidos.entities.Cidade;
 import com.practice.sistemadepedidos.entities.Cliente;
 import com.practice.sistemadepedidos.entities.Endereco;
 import com.practice.sistemadepedidos.entities.Estado;
+import com.practice.sistemadepedidos.entities.ItemPedido;
 import com.practice.sistemadepedidos.entities.Pagamento;
 import com.practice.sistemadepedidos.entities.PagamentoComBoleto;
 import com.practice.sistemadepedidos.entities.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.practice.sistemadepedidos.repositories.CidadeRepository;
 import com.practice.sistemadepedidos.repositories.ClienteRepository;
 import com.practice.sistemadepedidos.repositories.EnderecoRepository;
 import com.practice.sistemadepedidos.repositories.EstadoRepository;
+import com.practice.sistemadepedidos.repositories.ItemPedidoRepository;
 import com.practice.sistemadepedidos.repositories.PagamentoRepository;
 import com.practice.sistemadepedidos.repositories.PedidoRepository;
 import com.practice.sistemadepedidos.repositories.ProdutoRepository;
@@ -49,6 +51,8 @@ public class InstanciarBD implements CommandLineRunner{
 	private EnderecoRepository enderecoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -107,5 +111,18 @@ public class InstanciarBD implements CommandLineRunner{
 		
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pag1,pag2));
+		
+		ItemPedido ip1 = new ItemPedido(ped1, pr1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, pr3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, pr2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		pr1.getItens().addAll(Arrays.asList(ip1));
+		pr2.getItens().addAll(Arrays.asList(ip3));
+		pr3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2, ip3));
 	}
 }
