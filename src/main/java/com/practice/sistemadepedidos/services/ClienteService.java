@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.practice.sistemadepedidos.entities.Cliente;
 import com.practice.sistemadepedidos.repositories.ClienteRepository;
+import com.practice.sistemadepedidos.repositories.EnderecoRepository;
 import com.practice.sistemadepedidos.servicesexception.DataIntegrityException;
 import com.practice.sistemadepedidos.servicesexception.ResourceNotFoundException;
 
@@ -19,10 +20,12 @@ import com.practice.sistemadepedidos.servicesexception.ResourceNotFoundException
 public class ClienteService {
 	
 	@Autowired
-	private ClienteRepository repository;
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public Cliente findById(Long id) {
-		Optional<Cliente> obj = repository.findById(id);
+		Optional<Cliente> obj = clienteRepository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException("Não foi encontrato o recurso: " 
 			+ Cliente.class.getName()
 			+" com a id "
@@ -31,28 +34,30 @@ public class ClienteService {
 	}
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
-		return repository.save(obj);
+		obj = clienteRepository.save(obj);
+		enderecoRepository.saveAll(obj.getEnderecos());
+		return obj;
 	}
 	public Cliente update(Cliente obj) {
 		Cliente newObj =findById(obj.getId());
 		atualizarDados(newObj, obj);
-		return repository.save(newObj);
+		return clienteRepository.save(newObj);
 	}
 	public void delete(Long id) {
-		repository.findById(id);
+		clienteRepository.findById(id);
 		try {
-			repository.deleteById(id);
+			clienteRepository.deleteById(id);
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir um cliente que possui pedidos");
 		}
 	}
 	public List<Cliente> findAll() {
-		return repository.findAll();
+		return clienteRepository.findAll();
 	}
 	public Page<Cliente> findAllPaged(Integer pages, Integer linesPerPage, String orderBy, String direction){
 		PageRequest pageRequest = PageRequest.of(pages, linesPerPage, Direction.valueOf(direction),orderBy);
-		return repository.findAll(pageRequest);
+		return clienteRepository.findAll(pageRequest);
 	}
 	
 	private void atualizarDados(Cliente newObj, Cliente obj) {

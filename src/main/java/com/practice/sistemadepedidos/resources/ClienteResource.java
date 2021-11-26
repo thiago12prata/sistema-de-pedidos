@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.practice.sistemadepedidos.dto.ClienteDTO;
+import com.practice.sistemadepedidos.dto.ClienteNewDTO;
 import com.practice.sistemadepedidos.entities.Cliente;
 import com.practice.sistemadepedidos.services.ClienteService;
 
@@ -37,8 +38,8 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(service.findById(id));
 	}
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTO objDTO){
-		Cliente obj = ClienteDTO.toEntity(objDTO);
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO){
+		Cliente obj = ClienteNewDTO.toEntity(objDTO);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
