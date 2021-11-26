@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.practice.sistemadepedidos.dto.ClienteDTO;
-import com.practice.sistemadepedidos.dto.ClienteNewDTO;
+import com.practice.sistemadepedidos.dto.ClienteDTOUpdate;
+import com.practice.sistemadepedidos.dto.ClienteDTOInsert;
 import com.practice.sistemadepedidos.entities.Cliente;
 import com.practice.sistemadepedidos.services.ClienteService;
 
@@ -38,15 +38,15 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(service.findById(id));
 	}
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDTO){
-		Cliente obj = ClienteNewDTO.toEntity(objDTO);
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTOInsert objDTO){
+		Cliente obj = ClienteDTOInsert.toEntity(objDTO);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDTO, @PathVariable Long id){
-		Cliente obj = ClienteDTO.toEntity(objDTO);
+	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTOUpdate objDTO, @PathVariable Long id){
+		Cliente obj = ClienteDTOUpdate.toEntity(objDTO);
 		obj.setId(id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
@@ -57,22 +57,22 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 	@GetMapping
-	public ResponseEntity<List<ClienteDTO>> findAll() {
-		List<ClienteDTO> listDTO =  new ArrayList<>();
+	public ResponseEntity<List<ClienteDTOUpdate>> findAll() {
+		List<ClienteDTOUpdate> listDTO =  new ArrayList<>();
 		List<Cliente> list =  service.findAll();	
 		for(Cliente c: list) {
-			listDTO.add(new ClienteDTO(c));
+			listDTO.add(new ClienteDTOUpdate(c));
 		}
 		return ResponseEntity.ok().body(listDTO);
 	}
 	@GetMapping(value = "/paged")
-	public ResponseEntity<Page<ClienteDTO>> findAllPaged(
+	public ResponseEntity<Page<ClienteDTOUpdate>> findAllPaged(
 			@RequestParam(value = "pages", defaultValue = "0") Integer pages, 
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage, 
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
 		Page<Cliente> page =  service.findAllPaged(pages, linesPerPage, orderBy, direction);	
-		Page<ClienteDTO> pageDTO = page.map(c -> new ClienteDTO(c));
+		Page<ClienteDTOUpdate> pageDTO = page.map(c -> new ClienteDTOUpdate(c));
 		return ResponseEntity.ok().body(pageDTO);
 	}
 }

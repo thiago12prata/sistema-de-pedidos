@@ -2,32 +2,49 @@ package com.practice.sistemadepedidos.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.practice.sistemadepedidos.entities.Cidade;
 import com.practice.sistemadepedidos.entities.Cliente;
 import com.practice.sistemadepedidos.entities.Endereco;
 import com.practice.sistemadepedidos.entities.enums.TipoCliente;
+import com.practice.sistemadepedidos.services.validation.ClienteInsert;
 
-public class ClienteNewDTO implements Serializable{
+@ClienteInsert
+public class ClienteDTOInsert implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+	
+	@NotEmpty(message = "Preenchimento obrigatorio")
+	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
 	private String nome;
+	@NotEmpty(message = "Preenchimento obrigatorio")
+	@Email(message = "Email inválido")
 	private String email;
+	@NotEmpty(message = "Preenchimento obrigatorio")
 	private String cpfOuCnpj;
 	private Integer tipo;
 	
+	@NotEmpty(message = "Preenchimento obrigatorio")
 	private String logradouro;
+	@NotEmpty(message = "Preenchimento obrigatorio")
 	private String numero;
 	private String complemento;
+	@NotEmpty(message = "Preenchimento obrigatorio")
 	private String bairro;
+	@NotEmpty(message = "Preenchimento obrigatorio")
 	private String cep;
 	
+	@NotEmpty(message = "Preenchimento obrigatorio")
 	private String telefone1;
 	private String telefone2;
 	private String telefone3;
 	
 	private Long CidadeId;
 	
-	public ClienteNewDTO() {
+	public ClienteDTOInsert() {
 	}
 
 	public String getNome() {
@@ -109,10 +126,10 @@ public class ClienteNewDTO implements Serializable{
 		CidadeId = cidadeId;
 	}
 	
-	public static Cliente toEntity(ClienteDTO objDTO) {
+	public static Cliente toEntity(ClienteDTOUpdate objDTO) {
 		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
 	}
-	public static Cliente toEntity(ClienteNewDTO objDTO) {
+	public static Cliente toEntity(ClienteDTOInsert objDTO) {
 		Cliente obj = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(),TipoCliente.toEnum(objDTO.getTipo()));
 		Cidade cidade = new Cidade(objDTO.getCidadeId(), null, null);
 		Endereco endereco = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), obj, cidade);
