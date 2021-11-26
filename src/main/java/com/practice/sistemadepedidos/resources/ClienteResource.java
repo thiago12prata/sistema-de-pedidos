@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,7 @@ public class ClienteResource {
 	public ResponseEntity<Cliente> findById(@PathVariable Long id) {
 		return ResponseEntity.ok().body(service.findById(id));
 	}
+	@Transactional
 	@PostMapping
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteDTOInsert objDTO){
 		Cliente obj = ClienteDTOInsert.toEntity(objDTO);
