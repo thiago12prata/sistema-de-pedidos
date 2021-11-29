@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -51,6 +52,13 @@ public class Pedido implements Serializable{
 		this.enderecoDeEntrega = enderecoDeEntrega;
 	}
 	
+	public Double getValorTotal() {
+		double soma = 0.0;
+		for(ItemPedido ip: itens) {
+			soma += ip.getSubtotal(); 
+		}
+		return soma;
+	}
 	public Long getId() {
 		return id;
 	}

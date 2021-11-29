@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.practice.sistemadepedidos.dto.ProdutoDTO;
-import com.practice.sistemadepedidos.dto.ProdutoDTO;
-import com.practice.sistemadepedidos.entities.Produto;
 import com.practice.sistemadepedidos.entities.Produto;
 import com.practice.sistemadepedidos.resources.utils.URL;
 import com.practice.sistemadepedidos.services.ProdutoService;
