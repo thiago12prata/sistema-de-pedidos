@@ -67,14 +67,36 @@ public class InstanciarBD implements CommandLineRunner{
 		
 		Produto pr1 = new Produto(null, "Computador", 2000.00);
 		Produto pr2 = new Produto(null, "impressora", 800.00);
-		Produto pr3 = new Produto(null, "mouse", 80.00);
+		Produto pr3 = new Produto(null, "mouse", 800.00);
+		Produto pr4 = new Produto(null, "Mesa de escritorio", 80.00);
+		Produto pr5 = new Produto(null, "Toalha", 80.00);
+		Produto pr6 = new Produto(null, "Colcha", 80.00);
+		Produto pr7 = new Produto(null, "TV true color", 80.00);
+		Produto pr8 = new Produto(null, "Roçadeira", 80.00);
+		Produto pr9 = new Produto(null, "Abajour", 80.00);
+		Produto pr10 = new Produto(null, "Pente", 80.00);
+		Produto pr11 = new Produto(null, "Shampoo", 80.00);
+	
 		
 		cat1.getProdutos().addAll(Arrays.asList(pr1,pr2,pr3));
-		cat2.getProdutos().addAll(Arrays.asList(pr2));
+		cat2.getProdutos().addAll(Arrays.asList(pr2,pr4));
+		cat3.getProdutos().addAll(Arrays.asList(pr5, pr6));
+		cat4.getProdutos().addAll(Arrays.asList(pr1, pr2, pr3, pr7));
+		cat5.getProdutos().addAll(Arrays.asList(pr8));
+		cat6.getProdutos().addAll(Arrays.asList(pr9, pr10));
+		cat7.getProdutos().addAll(Arrays.asList(pr11));
 		
-		pr1.getCategorias().add(cat1);
-		pr2.getCategorias().addAll(Arrays.asList(cat1,cat2));
-		pr3.getCategorias().add(cat1);
+		pr1.getCategorias().addAll(Arrays.asList(cat1, cat4));
+		pr2.getCategorias().addAll(Arrays.asList(cat1, cat2, cat4));
+		pr3.getCategorias().addAll(Arrays.asList(cat1, cat4));
+		pr4.getCategorias().addAll(Arrays.asList(cat2));
+		pr5.getCategorias().addAll(Arrays.asList(cat3));
+		pr6.getCategorias().addAll(Arrays.asList(cat3));
+		pr7.getCategorias().addAll(Arrays.asList(cat4));
+		pr8.getCategorias().addAll(Arrays.asList(cat5));
+		pr9.getCategorias().addAll(Arrays.asList(cat6));
+		pr10.getCategorias().addAll(Arrays.asList(cat6));
+		pr11.getCategorias().addAll(Arrays.asList(cat7));
 		
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
@@ -84,7 +106,7 @@ public class InstanciarBD implements CommandLineRunner{
 		Cidade c3 = new Cidade(null, "Campinas", est2);
 
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3,cat4,cat5,cat6,cat7));
-		produtoRepository.saveAll(Arrays.asList(pr1,pr2,pr3));
+		produtoRepository.saveAll(Arrays.asList(pr1,pr2,pr3,pr4,pr5,pr6,pr7,pr8,pr9,pr10,pr11));
 		
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2,c3));
