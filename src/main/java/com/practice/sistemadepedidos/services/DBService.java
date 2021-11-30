@@ -1,12 +1,10 @@
-package com.practice.sistemadepedidos.config;
+package com.practice.sistemadepedidos.services;
 
 import java.time.Instant;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
 import com.practice.sistemadepedidos.entities.Categoria;
 import com.practice.sistemadepedidos.entities.Cidade;
@@ -31,9 +29,8 @@ import com.practice.sistemadepedidos.repositories.PagamentoRepository;
 import com.practice.sistemadepedidos.repositories.PedidoRepository;
 import com.practice.sistemadepedidos.repositories.ProdutoRepository;
 
-@Configuration
-@Profile("test")
-public class InstanciarBD implements CommandLineRunner{
+@Service
+public class DBService {
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
@@ -54,8 +51,7 @@ public class InstanciarBD implements CommandLineRunner{
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
-	@Override
-	public void run(String... args) throws Exception {
+	public void instanciarBD() {
 		Categoria cat1 = new Categoria(null, "Informatica");
 		Categoria cat2 = new Categoria(null, "Escritorio");
 		Categoria cat3 = new Categoria(null, "Cama mesa e banho");
