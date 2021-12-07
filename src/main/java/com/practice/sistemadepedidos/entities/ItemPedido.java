@@ -68,7 +68,7 @@ public class ItemPedido implements Serializable{
 	public void setProduto(Produto produto) {
 		id.setProduto(produto);
 	}
-	public Double getSubtotal() {
+	public Double getSubTotal() {
 		return (preco - desconto) * quantidade;
 	}
 	@Override
@@ -81,7 +81,7 @@ public class ItemPedido implements Serializable{
 		builder.append(", Preco unitário: ");
 		builder.append(nf.format(getPreco()));
 		builder.append(", SubTotal: ");
-		builder.append(nf.format(getSubtotal()));
+		builder.append(nf.format(getSubTotal()));
 		builder.append("\n");
 		return builder.toString();
 	}

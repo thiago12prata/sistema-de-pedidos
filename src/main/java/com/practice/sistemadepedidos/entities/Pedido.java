@@ -59,7 +59,7 @@ public class Pedido implements Serializable{
 	public Double getValorTotal() {
 		double soma = 0.0;
 		for(ItemPedido ip: itens) {
-			soma += ip.getSubtotal(); 
+			soma += ip.getSubTotal(); 
 		}
 		return soma;
 	}
@@ -132,7 +132,7 @@ public class Pedido implements Serializable{
 		for(ItemPedido ip : getItens()) {
 			builder.append(ip.toString());		
 		}
-		builder.append("Valor toatal: ");
+		builder.append("Valor total: ");
 		builder.append(nf.format(getValorTotal()));
 		return builder.toString();
 	}
