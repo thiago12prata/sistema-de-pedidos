@@ -18,6 +18,7 @@ import com.practice.sistemadepedidos.entities.PagamentoComBoleto;
 import com.practice.sistemadepedidos.entities.PagamentoComCartao;
 import com.practice.sistemadepedidos.entities.Pedido;
 import com.practice.sistemadepedidos.entities.Produto;
+import com.practice.sistemadepedidos.entities.enums.Perfil;
 import com.practice.sistemadepedidos.entities.enums.StatusPagamento;
 import com.practice.sistemadepedidos.entities.enums.TipoCliente;
 import com.practice.sistemadepedidos.repositories.CategoriaRepository;
@@ -115,15 +116,20 @@ public class DBService {
 		
 		Cliente cli1 = new Cliente(null, "Maria silva", "thiago17prata@gmail.com", "3333333333333", TipoCliente.PESSOA_FISICA, bCrypt.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("95959-9595", "96363-2525"));
-		clienteRepository.saveAll(Arrays.asList(cli1));
+		
+		Cliente cli2 = new Cliente(null, "Ana Costa", "thiago12prata@gmail.com", "99940195036", TipoCliente.PESSOA_FISICA, bCrypt.encode("123"));
+		cli2.addPerdil(Perfil.ADMIN);
+		cli2.getTelefones().addAll(Arrays.asList("98585-5959", "97458-3625"));
+		
 		Endereco e1 = new Endereco(null, "Rua flores", "300", "apto 303", "jardim", "38220834", cli1, c1);
-		e1.setCidade(c1);
 		Endereco e2 = new Endereco(null, "Av Matos", "105", "Sala 800", "Centro", "38220834", cli1, c2);
+		Endereco e3 = new Endereco(null, "Av Floriano", "305", null, "Centro", "38220834", cli2, c2);
 		
 		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		cli1.getEnderecos().addAll(Arrays.asList(e3));
 		
-		clienteRepository.saveAll(Arrays.asList(cli1));
-		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		clienteRepository.saveAll(Arrays.asList(cli1,cli2));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2,e3));
 		
 		Pedido ped1 = new Pedido(null, Instant.parse("2017-09-30T10:15:30.00Z"), cli1, e1);
 		Pedido ped2 = new Pedido(null, Instant.parse("2017-10-10T10:15:30.00Z"), cli1, e2);
