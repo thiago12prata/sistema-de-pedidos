@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.practice.sistemadepedidos.entities.Categoria;
@@ -32,6 +33,8 @@ import com.practice.sistemadepedidos.repositories.ProdutoRepository;
 @Service
 public class DBService {
 
+	@Autowired
+	private BCryptPasswordEncoder bCrypt;
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	@Autowired
@@ -110,7 +113,7 @@ public class DBService {
 		estadoRepository.saveAll(Arrays.asList(est1,est2));
 		cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));	
 		
-		Cliente cli1 = new Cliente(null, "Maria silva", "thiago17prata@gmail.com", "3333333333333", TipoCliente.PESSOA_FISICA);
+		Cliente cli1 = new Cliente(null, "Maria silva", "thiago17prata@gmail.com", "3333333333333", TipoCliente.PESSOA_FISICA, bCrypt.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("95959-9595", "96363-2525"));
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		Endereco e1 = new Endereco(null, "Rua flores", "300", "apto 303", "jardim", "38220834", cli1, c1);

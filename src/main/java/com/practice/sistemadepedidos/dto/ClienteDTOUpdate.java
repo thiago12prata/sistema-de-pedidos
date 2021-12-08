@@ -57,6 +57,6 @@ public class ClienteDTOUpdate implements Serializable{
 	}
 	
 	public static Cliente toEntity(ClienteDTOUpdate objDTO) {
-		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
+		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
 	}
 }
