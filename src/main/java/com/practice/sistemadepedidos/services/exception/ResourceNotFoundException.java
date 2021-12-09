@@ -1,4 +1,4 @@
-package com.practice.sistemadepedidos.servicesexception;
+package com.practice.sistemadepedidos.services.exception;
 
 public class ResourceNotFoundException extends RuntimeException{
 	private static final long serialVersionUID = 1L;

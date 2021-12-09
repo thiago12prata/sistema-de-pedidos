@@ -13,7 +13,7 @@ import com.practice.sistemadepedidos.entities.enums.StatusPagamento;
 import com.practice.sistemadepedidos.repositories.ItemPedidoRepository;
 import com.practice.sistemadepedidos.repositories.PagamentoRepository;
 import com.practice.sistemadepedidos.repositories.PedidoRepository;
-import com.practice.sistemadepedidos.servicesexception.ResourceNotFoundException;
+import com.practice.sistemadepedidos.services.exception.ResourceNotFoundException;
 
 @Service
 public class PedidoService {

@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.practice.sistemadepedidos.entities.Categoria;
 import com.practice.sistemadepedidos.repositories.CategoriaRepository;
-import com.practice.sistemadepedidos.servicesexception.DataIntegrityException;
-import com.practice.sistemadepedidos.servicesexception.ResourceNotFoundException;
+import com.practice.sistemadepedidos.services.exception.DataIntegrityException;
+import com.practice.sistemadepedidos.services.exception.ResourceNotFoundException;
 
 @Service
 public class CategoriaService {

@@ -12,8 +12,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.practice.sistemadepedidos.servicesexception.DataIntegrityException;
-import com.practice.sistemadepedidos.servicesexception.ResourceNotFoundException;
+import com.practice.sistemadepedidos.services.exception.AuthorizarionException;
+import com.practice.sistemadepedidos.services.exception.DataIntegrityException;
+import com.practice.sistemadepedidos.services.exception.ResourceNotFoundException;
 
 
 @ControllerAdvice
@@ -51,7 +52,14 @@ public class ResourceExceptionHandler {
 		return ResponseEntity.status(status).body(err);
 	}
 	@ExceptionHandler(AccessDeniedException.class)
-	public ResponseEntity<StandardError> AccessDenied(AccessDeniedException e, HttpServletRequest request) {
+	public ResponseEntity<StandardError> accessDenied(AccessDeniedException e, HttpServletRequest request) {
+		String erro = "Acesso negado";
+		HttpStatus status = HttpStatus.FORBIDDEN;
+		StandardError err = new StandardError(Instant.now(), status.value(), erro, e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
+	@ExceptionHandler(AuthorizarionException.class)
+	public ResponseEntity<StandardError> authorizarion(AuthorizarionException e, HttpServletRequest request) {
 		String erro = "Acesso negado";
 		HttpStatus status = HttpStatus.FORBIDDEN;
 		StandardError err = new StandardError(Instant.now(), status.value(), erro, e.getMessage(), request.getRequestURI());

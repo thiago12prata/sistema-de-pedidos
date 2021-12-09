@@ -11,10 +11,13 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.practice.sistemadepedidos.entities.Cliente;
+import com.practice.sistemadepedidos.entities.enums.Perfil;
 import com.practice.sistemadepedidos.repositories.ClienteRepository;
 import com.practice.sistemadepedidos.repositories.EnderecoRepository;
-import com.practice.sistemadepedidos.servicesexception.DataIntegrityException;
-import com.practice.sistemadepedidos.servicesexception.ResourceNotFoundException;
+import com.practice.sistemadepedidos.security.UserSS;
+import com.practice.sistemadepedidos.services.exception.AuthorizarionException;
+import com.practice.sistemadepedidos.services.exception.DataIntegrityException;
+import com.practice.sistemadepedidos.services.exception.ResourceNotFoundException;
 
 @Service
 public class ClienteService {
@@ -25,6 +28,11 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 	
 	public Cliente findById(Long id) {
+		UserSS user = UserService.authenticated();
+		if (user==null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizarionException("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = clienteRepository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException("Não foi encontrato o recurso: " 
 			+ Cliente.class.getName()
