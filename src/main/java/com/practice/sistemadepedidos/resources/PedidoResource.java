@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.practice.sistemadepedidos.dto.CategoriaDTO;
-import com.practice.sistemadepedidos.entities.Categoria;
 import com.practice.sistemadepedidos.entities.Pedido;
 import com.practice.sistemadepedidos.services.PedidoService;
 

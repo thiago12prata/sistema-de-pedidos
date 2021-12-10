@@ -49,6 +49,10 @@ public class PedidoService {
 	}
 
 	public Pedido insert(Pedido obj) {
+		UserSS user = UserService.authenticated();
+		if (user==null||user.getId()!=obj.getCliente().getId()) {
+			throw new AuthorizarionException("Acesso negado, O Cliente não esta logado ou foi realizado tentativa de inserção de pedido em nome de outro cliente");
+		}		
 		obj.setId(null);
 		obj.setInstante(Instant.now());
 		obj.setCliente(clienteService.findById(obj.getCliente().getId()));
