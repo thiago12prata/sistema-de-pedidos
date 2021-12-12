@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.practice.sistemadepedidos.dto.ClienteDTOUpdate;
@@ -80,5 +81,10 @@ public class ClienteResource {
 		Page<Cliente> page =  service.findAllPaged(pages, linesPerPage, orderBy, direction);	
 		Page<ClienteDTOUpdate> pageDTO = page.map(c -> new ClienteDTOUpdate(c));
 		return ResponseEntity.ok().body(pageDTO);
+	}
+	@PostMapping(value = "/picture")
+	public ResponseEntity<Void> uploadFotoPerfil(@RequestParam(name= "file") MultipartFile file){
+		URI uri = service.uploadFotoPerfil(file);
+		return ResponseEntity.created(uri).build();
 	}
 }

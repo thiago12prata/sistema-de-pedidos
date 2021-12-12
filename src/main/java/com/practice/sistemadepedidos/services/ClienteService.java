@@ -1,5 +1,6 @@
 package com.practice.sistemadepedidos.services;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.practice.sistemadepedidos.entities.Cliente;
 import com.practice.sistemadepedidos.entities.enums.Perfil;
@@ -22,6 +24,8 @@ import com.practice.sistemadepedidos.services.exception.ResourceNotFoundExceptio
 @Service
 public class ClienteService {
 	
+	@Autowired
+	private S3Service s3Service;
 	@Autowired
 	private ClienteRepository clienteRepository;
 	@Autowired
@@ -71,5 +75,9 @@ public class ClienteService {
 	private void atualizarDados(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());		
+	}
+	
+	public URI uploadFotoPerfil(MultipartFile multipartFile) {	
+		return s3Service.uploadFile(multipartFile);
 	}
 }
