@@ -36,6 +36,8 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 	@Value("${img.prefix.client.profile}")
 	private String prefix;
+	@Value("${img.profile.size}")
+	private Integer size;
 	
 	public Cliente findById(Long id) {
 		UserSS user = UserService.authenticated();
@@ -87,8 +89,10 @@ public class ClienteService {
 		UserSS user = UserService.authenticated();
 		if (user==null) {
 			throw new AuthorizarionException("Acesso negado");
-		}
+		}	
 		BufferedImage jpgImagem = imageService.getJpgImageFromFile(multipartFile);
+		jpgImagem = imageService.cropSquare(jpgImagem);
+		jpgImagem = imageService.resize(jpgImagem, size);
 		String nomeArquivo = prefix + user.getId() +".jpg";
 		return s3Service.uploadFile(imageService.getInputStream(jpgImagem, "jpg"), nomeArquivo, "image");
 	}
