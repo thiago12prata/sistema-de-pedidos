@@ -24,7 +24,7 @@ public class AuthService {
 	
 	public void enviarNovaSenha(String email) {
 	
-		Cliente cliente = clienteRepository.findByEmail(email);
+		Cliente cliente = clienteRepository.findByEmail(email).get();
 		
 		if (cliente==null) {
 			throw new ResourceNotFoundException("Email não encontrado");

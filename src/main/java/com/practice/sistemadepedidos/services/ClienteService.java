@@ -79,6 +79,20 @@ public class ClienteService {
 		PageRequest pageRequest = PageRequest.of(pages, linesPerPage, Direction.valueOf(direction),orderBy);
 		return clienteRepository.findAll(pageRequest);
 	}
+
+	public Cliente findByEmail(String email) {
+		UserSS user = UserService.authenticated();
+		if (user==null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizarionException("Acesso negado");
+		}
+		
+		Optional<Cliente> obj = clienteRepository.findByEmail(email);
+		return obj.orElseThrow(() -> new ResourceNotFoundException("Não foi encontrato o recurso: " 
+			+ Cliente.class.getName()
+			+" com o email "
+			+ email 
+		));
+	}
 	
 	private void atualizarDados(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
@@ -96,4 +110,6 @@ public class ClienteService {
 		String nomeArquivo = prefix + user.getId() +".jpg";
 		return s3Service.uploadFile(imageService.getInputStream(jpgImagem, "jpg"), nomeArquivo, "image");
 	}
+	
+
 }
