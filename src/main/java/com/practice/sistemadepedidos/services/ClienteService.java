@@ -3,8 +3,10 @@ package com.practice.sistemadepedidos.services;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
+import java.awt.image.BufferedImage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,11 +27,15 @@ import com.practice.sistemadepedidos.services.exception.ResourceNotFoundExceptio
 public class ClienteService {
 	
 	@Autowired
+	private ImageService imageService;
+	@Autowired
 	private S3Service s3Service;
 	@Autowired
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Value("${img.prefix.client.profile}")
+	private String prefix;
 	
 	public Cliente findById(Long id) {
 		UserSS user = UserService.authenticated();
@@ -82,10 +88,8 @@ public class ClienteService {
 		if (user==null) {
 			throw new AuthorizarionException("Acesso negado");
 		}
-		URI uri = s3Service.uploadFile(multipartFile);
-		Cliente obj = clienteRepository.findById(user.getId()).get();
-		obj.setImageUrl(uri.toString());
-		clienteRepository.save(obj);
-		return uri;
+		BufferedImage jpgImagem = imageService.getJpgImageFromFile(multipartFile);
+		String nomeArquivo = prefix + user.getId() +".jpg";
+		return s3Service.uploadFile(imageService.getInputStream(jpgImagem, "jpg"), nomeArquivo, "image");
 	}
 }
