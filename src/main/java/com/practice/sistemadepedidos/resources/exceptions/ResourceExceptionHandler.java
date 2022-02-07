@@ -55,6 +55,7 @@ public class ResourceExceptionHandler {
 		}
 		return ResponseEntity.status(status).body(err);
 	}
+	
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<StandardError> accessDenied(AccessDeniedException e, HttpServletRequest request) {
 		String erro = "Acesso negado";

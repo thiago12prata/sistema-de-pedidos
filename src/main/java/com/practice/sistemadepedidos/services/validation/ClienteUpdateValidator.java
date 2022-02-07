@@ -17,12 +17,12 @@ import com.practice.sistemadepedidos.repositories.ClienteRepository;
 import com.practice.sistemadepedidos.resources.exceptions.FieldMessage;
 
 public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTOUpdate> {
+
+	@Autowired
+	private HttpServletRequest request;
 	
 	@Autowired
-	HttpServletRequest request;
-	
-	@Autowired
-	private ClienteRepository repository;
+	private ClienteRepository repo;
 	
 	@Override
 	public void initialize(ClienteUpdate ann) {
@@ -30,17 +30,18 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
 
 	@Override
 	public boolean isValid(ClienteDTOUpdate objDto, ConstraintValidatorContext context) {
+		
 		@SuppressWarnings("unchecked")
 		Map<String, String> map = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
-		Long uriId = Long.parseLong(map.get("id"));
+		Integer uriId = Integer.parseInt(map.get("id"));
 		
 		List<FieldMessage> list = new ArrayList<>();
 		
-		Cliente aux = repository.findByEmail(objDto.getEmail()).get();
-		if (aux!= null && !aux.getId().equals(uriId)) {
-			list.add(new FieldMessage("email", "Email já cadastrado"));
+		Cliente aux = repo.findByEmail(objDto.getEmail());
+		if (aux != null && !aux.equals(uriId)) {
+			list.add(new FieldMessage("email", "Email já existente"));
 		}
-		
+
 		for (FieldMessage e : list) {
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate(e.getMessage()).addPropertyNode(e.getFieldName())
@@ -49,3 +50,4 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
 		return list.isEmpty();
 	}
 }
+

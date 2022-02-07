@@ -16,9 +16,9 @@ import com.practice.sistemadepedidos.resources.exceptions.FieldMessage;
 import com.practice.sistemadepedidos.services.validation.utils.BR;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteDTOInsert> {
-	
+
 	@Autowired
-	private ClienteRepository repository;
+	private ClienteRepository repo;
 	
 	@Override
 	public void initialize(ClienteInsert ann) {
@@ -26,18 +26,20 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 
 	@Override
 	public boolean isValid(ClienteDTOInsert objDto, ConstraintValidatorContext context) {
+		
 		List<FieldMessage> list = new ArrayList<>();
-
+		
 		if (objDto.getTipo().equals(TipoCliente.PESSOA_FISICA.getCod()) && !BR.isValidCPF(objDto.getCpfOuCnpj())) {
-			list.add(new FieldMessage("cpfOuCnpj", "CPF invalido"));
-		}
-		if (objDto.getTipo().equals(TipoCliente.PESSOA_JURIDICA.getCod()) && !BR.isValidCNPJ(objDto.getCpfOuCnpj())) {
-			list.add(new FieldMessage("cpfOuCnpj", "CNPJ invalido"));
+			list.add(new FieldMessage("cpfOuCnpj", "CPF inválido"));
 		}
 
-		Cliente aux = repository.findByEmail(objDto.getEmail()).get();
-		if (aux!=null) {
-			list.add(new FieldMessage("email", "Email já cadastrado"));
+		if (objDto.getTipo().equals(TipoCliente.PESSOA_JURIDICA.getCod()) && !BR.isValidCNPJ(objDto.getCpfOuCnpj())) {
+			list.add(new FieldMessage("cpfOuCnpj", "CNPJ inválido"));
+		}
+
+		Cliente aux = repo.findByEmail(objDto.getEmail());
+		if (aux != null) {
+			list.add(new FieldMessage("email", "Email já existente"));
 		}
 		
 		for (FieldMessage e : list) {
@@ -48,3 +50,4 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 		return list.isEmpty();
 	}
 }
+

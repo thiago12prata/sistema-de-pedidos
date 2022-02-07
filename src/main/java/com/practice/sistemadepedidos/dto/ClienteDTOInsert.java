@@ -6,22 +6,15 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import com.practice.sistemadepedidos.entities.Cidade;
 import com.practice.sistemadepedidos.entities.Cliente;
-import com.practice.sistemadepedidos.entities.Endereco;
-import com.practice.sistemadepedidos.entities.enums.TipoCliente;
 import com.practice.sistemadepedidos.services.validation.ClienteInsert;
 
 @ClienteInsert
 public class ClienteDTOInsert implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	@Autowired
-	private static BCryptPasswordEncoder pe;
-	
+
 	@NotEmpty(message = "Preenchimento obrigatorio")
 	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
 	private String nome;
@@ -33,7 +26,6 @@ public class ClienteDTOInsert implements Serializable{
 	private Integer tipo;
 	@NotEmpty(message = "Preenchimento obrigatorio")	
 	private String senha;
-	
 	@NotEmpty(message = "Preenchimento obrigatorio")
 	private String logradouro;
 	@NotEmpty(message = "Preenchimento obrigatorio")
@@ -49,7 +41,7 @@ public class ClienteDTOInsert implements Serializable{
 	private String telefone2;
 	private String telefone3;
 	
-	private Long CidadeId;
+	private Long cidadeId;
 	
 	public ClienteDTOInsert() {
 	}
@@ -133,27 +125,13 @@ public class ClienteDTOInsert implements Serializable{
 		this.telefone3 = telefone3;
 	}
 	public Long getCidadeId() {
-		return CidadeId;
+		return cidadeId;
 	}
 	public void setCidadeId(Long cidadeId) {
-		CidadeId = cidadeId;
+		this.cidadeId = cidadeId;
 	}
 	
 	public static Cliente toEntity(ClienteDTOUpdate objDTO) {
 		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
-	}
-	public static Cliente toEntity(ClienteDTOInsert objDTO) {
-		Cliente obj = new Cliente(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(),TipoCliente.toEnum(objDTO.getTipo()), pe.encode(objDTO.getSenha()));
-		Cidade cidade = new Cidade(objDTO.getCidadeId(), null, null);
-		Endereco endereco = new Endereco(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), obj, cidade);
-		obj.getEnderecos().add(endereco);
-		obj.getTelefones().add(objDTO.getTelefone1());
-		if (objDTO.getTelefone2()!=null) {
-			obj.getTelefones().add(objDTO.getTelefone2());
-		}
-		if (objDTO.getTelefone3()!=null) {
-			obj.getTelefones().add(objDTO.getTelefone3());
-		}
-		return obj;
-	}
+	}	
 }
